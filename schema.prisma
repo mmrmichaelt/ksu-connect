@@ -1,0 +1,6 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+model User { id String @id @default(cuid()) email String @unique name String? createdAt DateTime @default(now()) listings Listing[] feedback Feedback[] notifications Notification[] }
+model Listing { id String @id @default(cuid()) title String description String? price Int category String sellerId String seller User @relation(fields:[sellerId],references:[id]) createdAt DateTime @default(now()) }
+model Feedback { id String @id @default(cuid()) subject String category String message String status String @default("OPEN") userId String user User @relation(fields:[userId],references:[id]) createdAt DateTime @default(now()) }
+model Notification { id String @id @default(cuid()) title String body String read Boolean @default(false) userId String user User @relation(fields:[userId],references:[id]) createdAt DateTime @default(now()) }
